@@ -1,0 +1,31 @@
+<!ELEMENT Annuaire (Fournisseurs, Mutuelles, Magasins)>
+<!ELEMENT Fournisseurs (Contact*)>
+<!ELEMENT Mutuelles (Contact*)>
+<!ELEMENT Magasins (Contact*)>
+<!ELEMENT Contact (Nom, Adresse?, Code_Cli_OR?, Code_Cli_OT?, Tel, Tel_SAV?, Fax?, Nom_commercial?, Tel_commercial?, Email?, Web_site?, ID_OR?, MDP_OR?, ID_OT?, MDP_OT?, Cmde_SAV?, PEC?, PEC_Derogation?, PEC_facturation?, PEC_annulation?, Annotations?, N_Finess?, N_Siret?, N_Intracomm?, Logo)>
+<!ATTLIST Contact data-id ID #REQUIRED>
+<!ELEMENT Nom (#PCDATA)>
+<!ELEMENT Adresse (#PCDATA)>
+<!ELEMENT Code_Cli_OR (#PCDATA)>
+<!ELEMENT Code_Cli_OT (#PCDATA)>
+<!ELEMENT Tel (#PCDATA)>
+<!ELEMENT Tel_SAV (#PCDATA)>
+<!ELEMENT Fax (#PCDATA)>
+<!ELEMENT Nom_commercial (#PCDATA)>
+<!ELEMENT Tel_commercial (#PCDATA)>
+<!ELEMENT Email (#PCDATA)>
+<!ELEMENT Web_site (#PCDATA)>
+<!ELEMENT ID_OR (#PCDATA)>
+<!ELEMENT MDP_OR (#PCDATA)>
+<!ELEMENT ID_OT (#PCDATA)>
+<!ELEMENT MDP_OT (#PCDATA)>
+<!ELEMENT Cmde_SAV (#PCDATA)>
+<!ELEMENT PEC (#PCDATA)>
+<!ELEMENT PEC_Derogation (#PCDATA)>
+<!ELEMENT PEC_facturation (#PCDATA)>
+<!ELEMENT PEC_annulation (#PCDATA)>
+<!ELEMENT Annotations (#PCDATA)>
+<!ELEMENT N_Finess (#PCDATA)>
+<!ELEMENT N_Siret (#PCDATA)>
+<!ELEMENT N_Intracomm (#PCDATA)>
+<!ELEMENT Logo (#PCDATA)>
