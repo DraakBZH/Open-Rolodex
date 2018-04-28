@@ -24,8 +24,8 @@ ontop = True
 resolution = (25, 25)
 bgcolor = "#36393E"
 textcolor = "#E5E5E5"
-rougecolor = "#FF2B47"
-bleucolor = "#666BFF"
+rougecolor = "#E84309"
+bleucolor = "#0788F5"
 datafile = 'data.xml'
 dtdfile = 'data.dtd'
 contact = {
@@ -165,7 +165,7 @@ def addmodifcontact(ident):
         choices = {'Fournisseurs', 'Mutuelles', 'Magasins'}
         tkvar.set('Aucune')
         popupMenu = OptionMenu(win_contact, tkvar, *choices)
-        popupMenu.place(x=110, y=55)
+        popupMenu.place(x=90, y=55)
         win_contact.nametowidget("!BSave").config(text='new')
         win_contact.nametowidget("!BSave").config(textvariable="new")
         win_contact.nametowidget("!BSuppr").place_forget()
@@ -181,6 +181,7 @@ def addmodifcontact(ident):
             win_contact.nametowidget("!%s" % key).place(x=5, y=starty)
             win_contact.nametowidget("!!%s" % key).place(x=110, y=starty)
             win_contact.nametowidget("!!%s" % key).delete(1.0, END)
+            win_contact.nametowidget("!B%s" % key).place_forget()
             adryscrollbar.place(in_=win_contact.nametowidget(
                 "!!%s" % key), relx=1.0, relheight=1.0, bordermode="outside")
             if modif and modifcontact[key] is not None:
@@ -194,7 +195,7 @@ def addmodifcontact(ident):
                 selectbackground=bgcolor, selectforeground=textcolor)
             win_contact.nametowidget("!%s" % key).place(x=5, y=starty)
             win_contact.nametowidget("!!%s" % key).place(x=110, y=starty)
-
+            win_contact.nametowidget("!B%s" % key).place_forget()
             win_contact.nametowidget("!!%s" % key).delete(1.0, END)
             anotyscrollbar.place(in_=win_contact.nametowidget(
                 "!!%s" % key), relx=1.0, relheight=1.0, bordermode="outside")
@@ -209,7 +210,7 @@ def addmodifcontact(ident):
                 selectbackground=bgcolor, selectforeground=textcolor)
             win_contact.nametowidget("!%s" % key).place(x=5, y=starty)
             win_contact.nametowidget("!!%s" % key).place(x=110, y=starty)
-
+            win_contact.nametowidget("!B%s" % key).place_forget()
             win_contact.nametowidget("!!%s" % key).delete(0, END)
             if modif:
                 if modifcontact[key] is None:
@@ -318,8 +319,28 @@ def fenetre(ident):
                             "!!%s" % info.tag).delete(0, END)
                         win_contact.nametowidget(
                             "!!%s" % info.tag).insert(0, info.text)
-                        win_contact.nametowidget(
-                            "!!%s" % info.tag).config(state="readonly")
+                        print(info.tag)
+                        if "_OR" in info.tag:
+                            win_contact.nametowidget(
+                                "!!%s" % info.tag).config(
+                                state="readonly", background=bgcolor,
+                                foreground=rougecolor,
+                                selectbackground=textcolor,
+                                selectforeground=bgcolor)
+                        elif "_OT" in info.tag:
+                            win_contact.nametowidget(
+                                "!!%s" % info.tag).config(
+                                state="readonly", background=bgcolor,
+                                foreground=bleucolor,
+                                selectbackground=textcolor,
+                                selectforeground=bgcolor)
+                        else:
+                            win_contact.nametowidget(
+                                "!!%s" % info.tag).config(
+                                state="readonly", background=bgcolor,
+                                foreground=textcolor,
+                                selectbackground=textcolor,
+                                selectforeground=bgcolor)
                         win_contact.nametowidget(
                             "!B%s" % info.tag).place(x=255, y=starty)
                         starty += 21
@@ -638,6 +659,10 @@ def generatedata():
         datalist = []
 
 
+def _on_mousewheel(event):
+    canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+
 generatedata()
 # ----------------------------------------------------------------------------
 # propriété fenetres principale
@@ -647,7 +672,8 @@ root.wm_attributes("-topmost", 1)
 root.minsize(width=235, height=575)
 root.geometry(tailleposition)
 root.title("Open Rolodex")
-root.iconbitmap(default='./img/repository.ico') 
+root.iconbitmap(default='./img/repository.ico')
+root.bind_all("<MouseWheel>", _on_mousewheel)
 
 myframe = Frame(root, relief=FLAT, width=100, height=300, bd=1)
 myframe.place(x=5, y=60)
@@ -744,45 +770,79 @@ popupMenu = OptionMenu(win_contact, tkvar, *choices)
 
 Entry(
     win_contact, name='!!Nom', state='readonly', width='23',
-    insertbackground=textcolor)
-Text(win_contact, name='!!Adresse', state='disabled', width='15', height='4')
+    insertbackground=bgcolor)
+Text(
+    win_contact, name='!!Adresse', state='disabled', width='15',
+    height='4', insertbackground=bgcolor)
 Entry(
     win_contact, name='!!Code_Cli_OR', state='readonly', width='23',
-    foreground=rougecolor, insertbackground=textcolor)
+    foreground=rougecolor, insertbackground=bgcolor)
 Entry(
     win_contact, name='!!Code_Cli_OT', state='readonly', width='23',
-    foreground=bleucolor)
-Entry(win_contact, name='!!Tel', state='readonly', width='23')
-Entry(win_contact, name='!!Tel_SAV', state='readonly', width='23')
-Entry(win_contact, name='!!Fax', state='readonly', width='23')
-Entry(win_contact, name='!!Nom_commercial', state='readonly', width='23')
-Entry(win_contact, name='!!Tel_commercial', state='readonly', width='23')
-Entry(win_contact, name='!!Email', state='readonly', width='23')
-Entry(win_contact, name='!!Web_site', state='readonly', width='23')
+    foreground=bleucolor, insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Tel', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Tel_SAV', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Fax', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Nom_commercial', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Tel_commercial', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Email', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Web_site', state='readonly',
+    width='23', insertbackground=bgcolor)
 Entry(
     win_contact, name='!!ID_OR', state='readonly', width='23',
-    foreground=rougecolor)
+    foreground=rougecolor, insertbackground=bgcolor)
 Entry(
     win_contact, name='!!MDP_OR', state='readonly', width='23',
-    foreground=rougecolor)
+    foreground=rougecolor, insertbackground=bgcolor)
 Entry(
     win_contact, name='!!ID_OT', state='readonly', width='23',
-    foreground=bleucolor)
+    foreground=bleucolor, insertbackground=bgcolor)
 Entry(
     win_contact, name='!!MDP_OT', state='readonly', width='23',
-    foreground=bleucolor)
-Entry(win_contact, name='!!Cmde_SAV', state='readonly', width='23')
-Entry(win_contact, name='!!PEC', state='readonly', width='23')
-Entry(win_contact, name='!!PEC_Derogation', state='readonly', width='23')
-Entry(win_contact, name='!!PEC_facturation', state='readonly', width='23')
-Entry(win_contact, name='!!PEC_annulation', state='readonly', width='23')
+    foreground=bleucolor, insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Cmde_SAV', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!PEC', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!PEC_Derogation', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!PEC_facturation', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!PEC_annulation', state='readonly',
+    width='23', insertbackground=bgcolor)
 Text(
     win_contact, name='!!Annotations',
-    state='disabled', width='15', height='5')
-Entry(win_contact, name='!!N_Finess', state='readonly', width='23')
-Entry(win_contact, name='!!N_Siret', state='readonly', width='23')
-Entry(win_contact, name='!!N_Intracomm', state='readonly', width='23')
-Entry(win_contact, name='!!Logo', state='readonly', width='15')
+    state='disabled', width='15', height='5', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!N_Finess', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!N_Siret', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!N_Intracomm', state='readonly',
+    width='23', insertbackground=bgcolor)
+Entry(
+    win_contact, name='!!Logo', state='readonly',
+    width='15', insertbackground=bgcolor)
 
 logo_copy = ImageTk.PhotoImage(
     Image.open("./img/copy.png").resize((15, 15), Image.ANTIALIAS))
