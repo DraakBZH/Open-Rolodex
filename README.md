@@ -20,5 +20,5 @@ setup.py: used by cx_Freeze to create a standalone executable file for windows
 *  cx_Freeze (to create a standalone executable(exe) file)
 
 ### In case of a standalone executable
-You need to install *Redistribuable Visual C++ pour Visual Studio 2015*
+You need to install *Redistribuable Visual C++ pour Visual Studio 2015*.
 You should find it [here](https://www.microsoft.com/fr-fr/download/details.aspx?id=48145) (x86 or x64, depend of your version of python and the setup. Test was with a x86)
